@@ -240,11 +240,16 @@ return {
         .setCustomId("loop")
         .setLabel("Loop")
         .setStyle(ButtonStyle.Secondary)
+        .setDisabled(disabled),
+
+      new ButtonBuilder()
+        .setCustomId("shuffle")
+        .setLabel("Shuffle")
+        .setStyle(ButtonStyle.Secondary)
         .setDisabled(disabled)
-    )
+    ).toJSON()
   ]
 };
-}
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
   return new ContainerBuilder()
     .addSectionComponents(
