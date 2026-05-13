@@ -190,9 +190,11 @@ function createNowPlayingContainer(player, track, disabled = false) {
     const info = track.info ?? {};
 
     let thumbnail =
-        info.artworkUrl ||
-        info.thumbnail ||
-        "https://i.imgur.com/QYJfXQv.png";
+    info.artworkUrl ||
+    info.thumbnail ||
+    (info.identifier
+        ? `https://img.youtube.com/vi/${info.identifier}/mqdefault.jpg`
+        : "https://i.imgur.com/QYJfXQv.png");
 
     if (!thumbnail && info.uri?.includes("youtube.com")) {
         const id = info.uri.split("v=")[1]?.split("&")[0];
