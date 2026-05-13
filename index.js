@@ -189,18 +189,82 @@ function formatTime(ms) {
 function createNowPlayingContainer(player, track, disabled = false) {
   const info = track.info ?? {};
 
+  let thumbnail =
+    info.artworkUrl ||
+    info.thumbnail ||
+    "https://i.imgur.com/QYJfXQv.png";
+
+  if (!thumbnail && info.uri?.includes("youtube.com")) {
+    const id = info.uri.split("v=")[1]?.split("&")[0];
+    if (id) {
+      thumbnail = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+    }
+  }
+
   return new ContainerBuilder()
-    .addTextDisplayComponents(
-      new TextDisplayBuilder()
-        .setContent(`## <a:playy:1477532288274272387> Now Playing
+    .addSectionComponents(
+      new SectionBuilder()
+        .addTextDisplayComponents(
+          new TextDisplayBuilder().setContent(
+`## Track Queued
+
+> <:tick:1472560255396347999> **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** added to queue. Artist: \`${info.author || 'Unknown Artist'}\`
+
+## <a:playy:1477532288274272387> Now Playing
 
 > **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** - \`${info.author || 'Unknown Artist'}\`
 > Duration: \`${formatTime(info.length || 0)}\`
-> Requested by <@${track.info.requester}>`)
+> Requested by <@${track.info.requester}>`
+          )
+        )
+        .setThumbnailAccessory(
+          new ThumbnailBuilder()
+            .setURL(thumbnail)
+            .setDescription("Song Thumbnail")
+        )
+    )
+    .addSeparatorComponents(
+      new SeparatorBuilder()
+        .setSpacing(SeparatorSpacingSize.Small)
+        .setDivider(true)
+    )
+    .addActionRowComponents(
+      new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId(player.paused ? "resume" : "pause")
+          .setLabel(player.paused ? "Resume" : "Pause")
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(disabled),
+
+        new ButtonBuilder()
+          .setCustomId("skip")
+          .setLabel("Skip")
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(disabled),
+
+        new ButtonBuilder()
+          .setCustomId("stop")
+          .setLabel("Stop")
+          .setStyle(ButtonStyle.Danger)
+          .setDisabled(disabled),
+
+        new ButtonBuilder()
+          .setCustomId("loop")
+          .setLabel("Loop")
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(disabled)
+      )
+    )
+    .addActionRowComponents(
+      new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId("shuffle")
+          .setLabel("Shuffle")
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(disabled)
+      )
     );
 }
-
-
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
   return new ContainerBuilder()
     .addSectionComponents(
