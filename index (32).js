@@ -576,36 +576,47 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       if (resolve.loadType === 'playlist') {
-        for (const track of resolve.tracks) {
-          track.info.requester = member.user.id;
-          player.queue.add(track);
-        }
-
-        const container = createSimpleContainerNoButtons(
-          'Playlist Added',
-          `Added playlist **${resolve.playlistInfo.name}** (${resolve.tracks.length} tracks)`,
-          config.emojis.success
-        );
-
-        await interaction.editReply({ components: [container], flags: MessageFlags.IsPersistent | MessageFlags.IsComponentsV2 });
-      } else if (resolve.loadType === 'search' || resolve.loadType === 'track') {
-        const track = resolve.tracks[0];
+    for (const track of resolve.tracks) {
         track.info.requester = member.user.id;
         player.queue.add(track);
+    }
+
+    const container = createSimpleContainerNoButtons(
+        'Playlist Added',
+        `Added playlist **${resolve.playlistInfo.name}** (${resolve.tracks.length} tracks)`,
+        config.emojis.success
+    );
+
+    await interaction.editReply({
+        components: [container],
+        flags: MessageFlags.IsComponentsV2
+    });
+
+} else if (resolve.loadType === 'search' || resolve.loadType === 'track') {
+
+    const track = resolve.tracks[0];
+    track.info.requester = member.user.id;
+    player.queue.add(track);
+
 } else {
-  return interaction.editReply({ content: `${config.emojis.error} No results found` });
+
+    return interaction.editReply({
+        content: `${config.emojis.error} No results found`
+    });
+
 }
 
-if (!player.playing && !player.paused) player.play();
+if (!player.playing && !player.paused)
+    player.play();
+    }
+ catch (error) {
 
-} catch (error) {
-  console.error('Play command error:', error);
+    console.error('Play command error:', error);
 
-  await interaction.editReply({
-    content: `${config.emojis.error} An error occurred`
-  });
-}
-    
+    await interaction.editReply({
+        content: `${config.emojis.error} An error occurred`
+    });
+    }
   if (commandName === 'pause') {
     const player = riffy.players.get(guild.id);
     if (!player) return interaction.reply({ content: `${config.emojis.error} No player found`, ephemeral: true });
