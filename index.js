@@ -247,7 +247,7 @@ return {
         .setLabel("Shuffle")
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(disabled)
-    ).toJSON()
+    )
   ]
 };
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
