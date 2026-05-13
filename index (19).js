@@ -593,16 +593,7 @@ client.on('interactionCreate', async (interaction) => {
         track.info.requester = member.user.id;
         player.queue.add(track);
 
-        const container = createSimpleContainerNoButtons(
-          'Added to Queue',
-          `[${track.info.title}](${track.info.uri})`,
-          config.emojis.success
-        );
-
-        await interaction.editReply({ components: [container], flags: MessageFlags.IsPersistent | MessageFlags.IsComponentsV2 });
-      } else {
-        return interaction.editReply({ content: `${config.emojis.error} No results found` });
-      }
+        
 
       if (!player.playing && !player.paused) player.play();
     } catch (error) {
