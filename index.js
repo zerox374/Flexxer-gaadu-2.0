@@ -200,19 +200,17 @@ function createNowPlayingContainer(player, track, disabled = false) {
       thumbnail = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
     }
   }
-
-  const embed = new EmbedBuilder()
-    .setColor("#2F3136")
-    .setThumbnail(thumbnail)
-    .setDescription(
-`## <a:playy:1477532288274272387> Now Playing
+const embed = new EmbedBuilder()
+  .setColor("#2F3136")
+  .setThumbnail(thumbnail)
+  .setDescription(
+    `<a:playy:1477532288274272387> **Now Playing**
 
 > **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})**
 > Artist: \`${info.author || 'Unknown Artist'}\`
 > Duration: \`${formatTime(info.length || 0)}\`
 > Requested by <@${track.info.requester}>`
-)
-
+  );
   const buttons = [
     new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -246,7 +244,6 @@ function createNowPlayingContainer(player, track, disabled = false) {
     components: buttons
   };
 }
-
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
   return new ContainerBuilder()
     .addSectionComponents(
