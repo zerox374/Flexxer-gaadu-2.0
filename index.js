@@ -213,8 +213,10 @@ function createNowPlayingContainer(player, track, disabled = false) {
 
 > **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** - \`${info.author || 'Unknown Artist'}\`
 > Duration: \`${formatTime(info.length || 0)}\`
-> Requested by <@${track.info.requester}>`
-)
+> Requested by <@${track.info.requester}>
+`
+          )
+        )
         .setThumbnailAccessory(
           new ThumbnailBuilder()
             .setURL(thumbnail)
@@ -262,7 +264,7 @@ function createNowPlayingContainer(player, track, disabled = false) {
           .setDisabled(disabled)
       )
     );
-}
+      }
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
   return new ContainerBuilder()
     .addSectionComponents(
