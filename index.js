@@ -206,8 +206,7 @@ function createNowPlayingContainer(player, track, disabled = false) {
       new SectionBuilder()
         .addTextDisplayComponents(
           new TextDisplayBuilder().setContent(
-`## Track Queued
-
+`
 > <:tick:1472560255396347999> **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** added to queue. Artist: \`${info.author || 'Unknown Artist'}\`
 
 ## <a:playy:1477532288274272387> Now Playing
@@ -215,8 +214,7 @@ function createNowPlayingContainer(player, track, disabled = false) {
 > **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** - \`${info.author || 'Unknown Artist'}\`
 > Duration: \`${formatTime(info.length || 0)}\`
 > Requested by <@${track.info.requester}>`
-          )
-        )
+)
         .setThumbnailAccessory(
           new ThumbnailBuilder()
             .setURL(thumbnail)
@@ -593,13 +591,7 @@ client.on('interactionCreate', async (interaction) => {
         track.info.requester = member.user.id;
         player.queue.add(track);
 
-        const container = createSimpleContainerNoButtons(
-          'Added to Queue',
-          `[${track.info.title}](${track.info.uri})`,
-          config.emojis.success
-        );
-
-        await interaction.editReply({ components: [container], flags: MessageFlags.IsPersistent | MessageFlags.IsComponentsV2 });
+        
       } else {
         return interaction.editReply({ content: `${config.emojis.error} No results found` });
       }
@@ -1072,13 +1064,7 @@ delete require.cache[require.resolve("./prefix.json")];
                 track.info.requester = message.author.id;
                 player.queue.add(track);
 
-                const container = createSimpleContainerNoButtons(
-                  'Added to Queue',
-                  `[${track.info.title}](${track.info.uri})`,
-                  config.emojis.success
-                );
-
-                await message.reply({ components: [container], flags: MessageFlags.IsPersistent | MessageFlags.IsComponentsV2 });
+                
               } else {
                 return message.reply(`${config.emojis.error} No results found`);
               }
