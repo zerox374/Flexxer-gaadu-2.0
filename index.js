@@ -188,91 +188,18 @@ function formatTime(ms) {
 
 function createNowPlayingContainer(player, track, disabled = false) {
   const info = track.info ?? {};
-  let thumbnail = info.artworkUrl || info.thumbnail || null;
 
-  if (!thumbnail && info.uri && info.uri.includes('youtube.com')) {
-    const videoId = info.uri.split('v=')[1]?.split('&')[0];
-    if (videoId) {
-      thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-    }
-  }
-
-  if (!thumbnail && info.uri && info.uri.includes('youtu.be')) {
-    const videoId = info.uri.split('youtu.be/')[1]?.split('?')[0];
-    if (videoId) {
-      thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-    }
-  }
-
-  if (!thumbnail) {
-    thumbnail = 'https://i.imgur.com/QYJfXQv.png';
-  }
-
-  const isPaused = player.paused;
-
-  const container = new ContainerBuilder()
-    .addSectionComponents(
-      new SectionBuilder()
-        .addTextDisplayComponents(
-          new TextDisplayBuilder()
-            .setContent(`## ${config.emojis.music} Now Playing\n**[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})**`)
-        )
-        .setThumbnailAccessory(
-          new ThumbnailBuilder()
-            .setURL(thumbnail)
-            .setDescription(info.title || 'Song Thumbnail')
-        )
-    )
+  return new ContainerBuilder()
     .addTextDisplayComponents(
       new TextDisplayBuilder()
-        .setContent(`**Duration:** ${formatTime(info.length || 0)} • **Requested By:** <@${track.info.requester}>`)
-    )
-    .addSeparatorComponents(
-      new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true)
-    )
-    .addActionRowComponents(
-      new ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId(isPaused ? 'resume' : 'pause')
-            .setEmoji(isPaused ? config.emojis.play : config.emojis.pause)
-            .setStyle(isPaused ? ButtonStyle.Success : ButtonStyle.Primary)
-            .setDisabled(disabled),
-          new ButtonBuilder()
-            .setCustomId('skip')
-            .setEmoji(config.emojis.skip)
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(disabled),
-          new ButtonBuilder()
-            .setCustomId('stop')
-            .setEmoji(config.emojis.stop)
-            .setStyle(ButtonStyle.Danger)
-            .setDisabled(disabled),
-          new ButtonBuilder()
-            .setCustomId('shuffle')
-            .setEmoji(config.emojis.shuffle)
-            .setStyle(ButtonStyle.Secondary)
-            .setDisabled(disabled),
-          new ButtonBuilder()
-            .setCustomId('queue')
-            .setEmoji(config.emojis.queue)
-            .setStyle(ButtonStyle.Secondary)
-            .setDisabled(disabled)
-        )
-    )
-    .addActionRowComponents(
-      new ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('loop')
-            .setEmoji(config.emojis.loop)
-            .setStyle(player.loop && player.loop !== 'none' ? ButtonStyle.Success : ButtonStyle.Secondary)
-            .setDisabled(disabled)
-        )
-    );
+        .setContent(`## <a:playy:1477532288274272387> Now Playing
 
-  return container;
+> **[${info.title || 'Unknown Title'}](${info.uri || 'https://youtube.com'})** - \`${info.author || 'Unknown Artist'}\`
+> Duration: \`${formatTime(info.length || 0)}\`
+> Requested by <@${track.info.requester}>`)
+    );
 }
+
 
 function createSimpleContainer(title, description, emoji = config.emojis.info) {
   return new ContainerBuilder()
