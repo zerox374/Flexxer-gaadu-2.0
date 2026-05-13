@@ -592,10 +592,11 @@ client.on('interactionCreate', async (interaction) => {
         const track = resolve.tracks[0];
         track.info.requester = member.user.id;
         player.queue.add(track);
+} else {
+  return interaction.editReply({ content: `${config.emojis.error} No results found` });
+}
 
-        
-
-      if (!player.playing && !player.paused) player.play();
+if (!player.playing && !player.paused) player.play();
     } catch (error) {
       console.error('Play command error:', error);
       await interaction.editReply({ content: `${config.emojis.error} An error occurred while playing the song` });
